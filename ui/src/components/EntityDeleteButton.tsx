@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -13,6 +18,7 @@ import {
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface EntityDeleteButtonProps {
+    state: any;
     formAction: (payload: FormData) => void;
     idInputName: string;
     entityID: string;
@@ -20,11 +26,20 @@ interface EntityDeleteButtonProps {
 }
 
 export function EntityDeleteButton({
+    state,
     formAction,
     idInputName,
     entityID,
     isPending,
 }: EntityDeleteButtonProps) {
+    const { toast } = useToast();
+
+    useEffect(() => {
+        if (state?.error) {
+            toast({ title: state.error, variant: "destructive" });
+        }
+    }, [state?.error]);
+
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -50,7 +65,11 @@ export function EntityDeleteButton({
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <form action={formAction}>
-                        <input type="hidden" name={idInputName} value={entityID} />
+                        <input
+                            type="hidden"
+                            name={idInputName}
+                            value={entityID}
+                        />
                         <AlertDialogAction
                             type="submit"
                             className="bg-destructive text-destructive-foreground hover:bg-accent"

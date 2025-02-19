@@ -146,7 +146,7 @@ export function createActionColumn<T extends BaseEntity>(
         cell: ({ row }) => {
             const entity = row.original;
             const { toast } = useToast();
-            const [state, formAction, isPending] = useActionState(
+            const [state, deleteAction, isPending] = useActionState(
                 config.deleteAction,
                 undefined
             );
@@ -173,7 +173,8 @@ export function createActionColumn<T extends BaseEntity>(
                         </Link>
                         {config.extraMenuItems?.(entity)}
                         <EntityDeleteButton
-                            formAction={formAction}
+                            state={state}
+                            formAction={deleteAction}
                             idInputName={config.idInputName}
                             entityID={entity.id}
                             isPending={isPending}
