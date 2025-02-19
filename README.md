@@ -11,32 +11,9 @@ Sventory is an **inventory management software** designed for businesses and ind
 - **Nested Locations**: Define hierarchical storage locations (e.g., *Zone 1 > Racking 3 > Box 4*).
 - **Item Categories**: Organize inventory with parent-child item categories (e.g., *Electronics > Computers*).
 - **Authentication**: Secure user authentication using **JWT**.
-- **Rich Item Data**: Each item includes:
-  ```go
-  type Item struct {
-      ID            uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()"`
-      CreatedAt     time.Time
-      UpdatedAt     time.Time
-      CategoryID    uuid.UUID `gorm:"type:uuid;not null"`
-      SKU           string    `gorm:"uniqueIndex;not null"`
-      Name          string    `gorm:"not null"`
-      Description   string
-      Quantity      float64 `gorm:"not null"`
-      UnitOfMeasure string  `gorm:"not null"`
-      MinimumStock  float64
-      MaximumStock  float64
-      ReorderPoint  float64
-      CostPrice     int
-      SellingPrice  int
-      MSRP          int
-      Barcode       string
-      ImageURL      string
-      Weight        float64
-      Dimensions    string
-  }
-  ```
+- **Rich Item Data**: Each item includes many useful fields (e.g., *SKU, barcode, cost price, selling price, msrp, reorder point, quantity...*).
 
-### 🚀 Planned Features
+### 🚀 Planned & Desired Features
 
 - **Role-Based Access Control (RBAC)**: Assign roles and permissions to users.
 - **Transaction Tracking**: Keep records of inventory movement.
@@ -46,6 +23,10 @@ Sventory is an **inventory management software** designed for businesses and ind
 - **Advanced UI Customization**: More settings to personalize the interface.
 - **Dark/Light Mode**: Switch themes easily.
 - **Mobile App**: Manage inventory on the go with barcode scanning capabilities.
+- **API Documentation**: Detailed documentation for developers.
+- **Localization**: Support for multiple languages.
+- **Automated Backups**: Keep your data safe with regular backups.
+- **Notifications System**: Get alerts for low stock, etc.
 
 ## Tech Stack
 
@@ -81,7 +62,7 @@ Create a new database:
 psql -U postgres
 CREATE DATABASE sventory;
 ```
-Rename the `.env.example` file to `.env` and update the file with your database credentials.
+Rename the api `.env.example` file to `.env` and update the file with your database credentials.
 
 ### Backend Setup
 
