@@ -55,6 +55,12 @@ Make sure you have the following installed:
 - [Node.js](https://nodejs.org/en/download/)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
+### Clone the Repository
+
+```sh
+git clone https://github.com/HerclasNido/sventory.git
+```
+
 ### Database Setup
 Make sure you have PostgreSQL installed and running.
 Create a new database:
@@ -67,7 +73,6 @@ Rename the api `.env.example` file to `.env` and update the file with your datab
 ### Backend Setup
 
 ```sh
-git clone https://github.com/HerclasNido/sventory.git
 cd sventory/api
 go mod tidy
 go run cmd/server/main.go
