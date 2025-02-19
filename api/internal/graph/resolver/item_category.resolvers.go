@@ -98,6 +98,25 @@ func (r *mutationResolver) DeleteItemCategory(ctx context.Context, id string) (b
 	if err != nil {
 		return false, err
 	}
+
+	// Prevent deletion of item category if it has items
+	var itemCount int64
+	if err := database.DB.Model(&model.Item{}).Where("category_id = ?", entityID).Count(&itemCount).Error; err != nil {
+		return false, err
+	}
+	if itemCount > 0 {
+		return false, errors.New("cannot delete category with items")
+	}
+
+	// Prevent deletion of item category if it has child categories
+	var childrenCount int64
+	if err := database.DB.Model(&model.ItemCategory{}).Where("parent_category_id = ?", entityID).Count(&childrenCount).Error; err != nil {
+		return false, err
+	}
+	if childrenCount > 0 {
+		return false, errors.New("cannot delete category with child categories")
+	}
+
 	if err := database.DB.Delete(&model.ItemCategory{}, "id = ?", entityID).Error; err != nil {
 		return false, err
 	}

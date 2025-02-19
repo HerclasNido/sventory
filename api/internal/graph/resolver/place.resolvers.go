@@ -6,6 +6,7 @@ package resolver
 
 import (
 	"context"
+	"fmt"
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
@@ -93,6 +94,15 @@ func (r *mutationResolver) DeletePlace(ctx context.Context, id string) (bool, er
 	entityID, err := parseUUID(id)
 	if err != nil {
 		return false, err
+	}
+
+	// Prevent deletion of place with dependent locations
+	var count int64
+	if err := database.DB.Model(&model.Location{}).Where("place_id = ?", entityID).Count(&count).Error; err != nil {
+		return false, err
+	}
+	if count > 0 {
+		return false, fmt.Errorf("cannot delete place with dependent locations")
 	}
 
 	if err := database.DB.Delete(&model.Place{}, "id = ?", entityID).Error; err != nil {

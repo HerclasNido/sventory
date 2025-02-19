@@ -111,6 +111,25 @@ func (r *mutationResolver) DeleteLocation(ctx context.Context, id string) (bool,
 	if err != nil {
 		return false, err
 	}
+
+	// Prevent deletion of location with dependent items
+	var itemCount int64
+	if err := database.DB.Model(&model.Item{}).Where("location_id = ?", entityID).Count(&itemCount).Error; err != nil {
+		return false, fmt.Errorf("counting dependent items: %w", err)
+	}
+	if itemCount > 0 {
+		return false, errors.New("cannot delete location with dependent items")
+	}
+
+	// Prevent deletion of location with dependent child locations
+	var childrenCount int64
+	if err := database.DB.Model(&model.Location{}).Where("parent_location_id = ?", entityID).Count(&childrenCount).Error; err != nil {
+		return false, fmt.Errorf("counting dependent locations: %w", err)
+	}
+	if childrenCount > 0 {
+		return false, errors.New("cannot delete location with dependent child locations")
+	}
+
 	if err := database.DB.Delete(&model.Location{}, "id = ?", entityID).Error; err != nil {
 		return false, fmt.Errorf("deleting location: %w", err)
 	}
