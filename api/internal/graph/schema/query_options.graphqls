@@ -1,0 +1,21 @@
+input FilterInput {
+  field: String!
+  operator: String!
+  value: String!
+}
+
+input SortInput {
+  field: String!
+  direction: String!
+}
+
+input PaginationInput {
+  skip: Int
+  take: Int
+}
+
+input QueryOptions {
+  filters: [FilterInput!]
+  sort: [SortInput!]
+  pagination: PaginationInput
+}

@@ -1,0 +1,34 @@
+extend type Query {
+    inventoryTransactions(options: QueryOptions): [InventoryTransaction!]!
+    inventoryTransaction(id: UUID!): InventoryTransaction
+}
+
+extend type Mutation {
+    createInventoryTransaction(input: CreateInventoryTransactionInput!): InventoryTransaction!
+    updateInventoryTransaction(id: UUID!, input: UpdateInventoryTransactionInput!): InventoryTransaction!
+    deleteInventoryTransaction(id: UUID!): Boolean!
+}
+
+type InventoryTransaction {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    organization: Organization!
+    type: String!
+    referenceNumber: String!
+    notes: String
+    items: [TransactionItem!]!
+}
+
+input CreateInventoryTransactionInput {
+    organizationId: UUID!
+    type: String!
+    referenceNumber: String!
+    notes: String
+}
+
+input UpdateInventoryTransactionInput {
+    type: String
+    referenceNumber: String
+    notes: String
+}

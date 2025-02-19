@@ -1,0 +1,39 @@
+extend type Query {
+    integrationConfigs(options: QueryOptions): [IntegrationConfig!]!
+    integrationConfig(id: UUID!): IntegrationConfig
+}
+
+extend type Mutation {
+    createIntegrationConfig(input: CreateIntegrationConfigInput!): IntegrationConfig!
+    updateIntegrationConfig(id: UUID!, input: UpdateIntegrationConfigInput!): IntegrationConfig!
+    deleteIntegrationConfig(id: UUID!): Boolean!
+}
+
+type IntegrationConfig {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    organization: Organization!
+    name: String!
+    type: String!
+    apiKey: String!
+    apiSecret: String!
+    status: String!
+    lastSync: Time!
+}
+
+input CreateIntegrationConfigInput {
+    organizationId: UUID!
+    name: String!
+    type: String!
+    apiKey: String!
+    apiSecret: String!
+}
+
+input UpdateIntegrationConfigInput {
+    name: String
+    type: String
+    apiKey: String
+    apiSecret: String
+    status: String
+}

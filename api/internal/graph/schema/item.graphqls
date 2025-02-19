@@ -1,0 +1,70 @@
+extend type Query {
+    items(options: QueryOptions): [Item!]!
+    item(id: UUID!): Item
+}
+
+extend type Mutation {
+    createItem(input: CreateItemInput!): Item!
+    updateItem(id: UUID!, input: UpdateItemInput!): Item!
+    deleteItem(id: UUID!): Boolean!
+}
+
+type Item {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    category: ItemCategory!
+    sku: String!
+    name: String!
+    description: String
+    quantity: Float!
+    unitOfMeasure: String!
+    minimumStock: Float
+    maximumStock: Float
+    reorderPoint: Float
+    costPrice: Int
+    sellingPrice: Int
+    msrp: Int
+    barcode: String
+    imageUrl: String
+    weight: Float
+    dimensions: String
+}
+
+input CreateItemInput {
+    categoryId: UUID!
+    sku: String!
+    name: String!
+    description: String
+    quantity: Float!
+    unitOfMeasure: String!
+    minimumStock: Float
+    maximumStock: Float
+    reorderPoint: Float
+    costPrice: Int
+    sellingPrice: Int
+    msrp: Int
+    barcode: String
+    image: Upload
+    weight: Float
+    dimensions: String
+}
+
+input UpdateItemInput {
+    categoryId: UUID
+    sku: String
+    name: String
+    description: String
+    quantity: Float
+    unitOfMeasure: String
+    minimumStock: Float
+    maximumStock: Float
+    reorderPoint: Float
+    costPrice: Int
+    sellingPrice: Int
+    msrp: Int
+    barcode: String
+    image: Upload
+    weight: Float
+    dimensions: String
+}

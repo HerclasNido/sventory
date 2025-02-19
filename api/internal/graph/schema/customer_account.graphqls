@@ -1,0 +1,62 @@
+extend type Query {
+    customerAccounts(options: QueryOptions): [CustomerAccount!]!
+    customerAccount(id: UUID!): CustomerAccount
+}
+
+extend type Mutation {
+    createCustomerAccount(input: CreateCustomerAccountInput!): CustomerAccount!
+    updateCustomerAccount(id: UUID!, input: UpdateCustomerAccountInput!): CustomerAccount!
+    deleteCustomerAccount(id: UUID!): Boolean!
+}
+
+type CustomerAccount {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    organization: Organization!
+    name: String!
+    email: String
+    phone: String
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    state: String!
+    postalCode: String!
+    country: String!
+    taxId: String
+    notes: String
+    status: String!
+}
+
+input CreateCustomerAccountInput {
+    organizationId: UUID!
+    name: String!
+    email: String!
+    password: String!
+    phone: String
+    addressLine1: String
+    addressLine2: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+    taxId: String
+    notes: String
+    status: String
+}
+
+input UpdateCustomerAccountInput {
+    name: String
+    email: String
+    password: String
+    phone: String
+    addressLine1: String
+    addressLine2: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+    taxId: String
+    notes: String
+    status: String
+}

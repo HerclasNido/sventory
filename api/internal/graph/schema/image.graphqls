@@ -1,0 +1,8 @@
+extend type Mutation {
+    uploadItemImage(input: UploadItemImageInput!): String!
+}
+
+input UploadItemImageInput {
+    image: Upload!
+    itemID: String!
+}

@@ -1,0 +1,35 @@
+extend type Query {
+    users(options: QueryOptions): [User!]!
+    user(id: UUID!): User
+}
+
+extend type Mutation {
+    createUser(input: CreateUserInput!): User!
+    updateUser(id: UUID!, input: UpdateUserInput!): User!
+    deleteUser(id: UUID!): Boolean!
+}
+
+type User {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    email: String!
+    firstName: String
+    lastName: String
+    roles: [Role!]!
+    organizations: [Organization!]!
+}
+
+input CreateUserInput {
+    email: String!
+    password: String!
+    firstName: String
+    lastName: String
+}
+
+input UpdateUserInput {
+    email: String
+    password: String
+    firstName: String
+    lastName: String
+}

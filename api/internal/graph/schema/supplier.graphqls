@@ -1,0 +1,67 @@
+extend type Query {
+    suppliers(options: QueryOptions): [Supplier!]!
+    supplier(id: UUID!): Supplier
+}
+
+extend type Mutation {
+    createSupplier(input: CreateSupplierInput!): Supplier!
+    updateSupplier(id: UUID!, input: UpdateSupplierInput!): Supplier!
+    deleteSupplier(id: UUID!): Boolean!
+}
+
+type Supplier {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    organization: Organization!
+    name: String!
+    contactName: String
+    email: String
+    phone: String
+    addressLine1: String
+    addressLine2: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+    paymentTerms: String
+    taxId: String
+    notes: String
+    status: String!
+    items: [SupplierItem!]
+}
+
+input CreateSupplierInput {
+    organizationId: UUID!
+    name: String!
+    contactName: String
+    email: String
+    phone: String
+    addressLine1: String
+    addressLine2: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+    paymentTerms: String
+    taxId: String
+    notes: String
+    status: String!
+}
+
+input UpdateSupplierInput {
+    name: String
+    contactName: String
+    email: String
+    phone: String
+    addressLine1: String
+    addressLine2: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+    paymentTerms: String
+    taxId: String
+    notes: String
+    status: String
+}

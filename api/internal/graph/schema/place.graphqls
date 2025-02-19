@@ -1,0 +1,49 @@
+extend type Query {
+    places(options: QueryOptions): [Place!]!
+    place(id: UUID!): Place
+}
+
+extend type Mutation {
+    createPlace(input: CreatePlaceInput!): Place!
+    updatePlace(id: UUID!, input: UpdatePlaceInput!): Place!
+    deletePlace(id: UUID!): Boolean!
+}
+
+type Place {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    organization: Organization!
+    name: String!
+    type: String!
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    state: String!
+    postalCode: String!
+    country: String!
+    locations: [Location!]
+}
+
+input CreatePlaceInput {
+    organizationId: UUID!
+    name: String!
+    type: String!
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    state: String!
+    postalCode: String!
+    country: String!
+}
+
+input UpdatePlaceInput {
+    name: String
+    type: String
+    addressLine1: String
+    addressLine2: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+}

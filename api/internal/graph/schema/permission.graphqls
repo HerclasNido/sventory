@@ -1,0 +1,32 @@
+extend type Query {
+    permissions(options: QueryOptions): [Permission!]!
+    permission(id: UUID!): Permission
+}
+
+extend type Mutation {
+    createPermission(input: CreatePermissionInput!): Permission!
+    updatePermission(id: UUID!, input: UpdatePermissionInput!): Permission!
+    deletePermission(id: UUID!): Boolean!
+    
+    assignRolePermission(roleId: UUID!, permissionId: UUID!): RolePermission!
+    removeRolePermission(roleId: UUID!, permissionId: UUID!): Boolean!
+}
+
+type Permission {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    name: String!
+    description: String
+    roles: [Role!]!
+}
+
+input CreatePermissionInput {
+    name: String!
+    description: String
+}
+
+input UpdatePermissionInput {
+    name: String
+    description: String
+}

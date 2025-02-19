@@ -1,0 +1,41 @@
+extend type Query {
+    supplierItems(options: QueryOptions): [SupplierItem!]!
+    supplierItem(id: UUID!): SupplierItem
+}
+
+extend type Mutation {
+    createSupplierItem(input: CreateSupplierItemInput!): SupplierItem!
+    updateSupplierItem(id: UUID!, input: UpdateSupplierItemInput!): SupplierItem!
+    deleteSupplierItem(id: UUID!): Boolean!
+}
+
+type SupplierItem {
+    id: UUID!
+    supplier: Supplier!
+    item: Item!
+    supplierSku: String
+    unitCost: Int!
+    moq: Float!
+    leadTime: Int!
+    isPreferred: Boolean!
+}
+
+input CreateSupplierItemInput {
+    supplierId: UUID!
+    itemId: UUID!
+    supplierSku: String
+    unitCost: Int
+    moq: Float
+    leadTime: Int
+    isPreferred: Boolean
+}
+
+input UpdateSupplierItemInput {
+    supplierId: UUID
+    itemId: UUID
+    supplierSku: String
+    unitCost: Int
+    moq: Float
+    leadTime: Int
+    isPreferred: Boolean
+}

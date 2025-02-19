@@ -1,0 +1,39 @@
+extend type Query {
+    organizations(options: QueryOptions): [Organization!]!
+    organization(id: UUID!): Organization
+}
+
+extend type Mutation {
+    createOrganization(input: CreateOrganizationInput!): Organization!
+    updateOrganization(id: UUID!, input: UpdateOrganizationInput!): Organization!
+    deleteOrganization(id: UUID!): Boolean!
+}
+
+type Organization {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    name: String!
+    description: String
+    adminEmail: String!
+    taxId: String!
+    logoUrl: String!
+    locations: [Location!]!
+    users: [User!]!
+}
+
+input CreateOrganizationInput {
+    name: String!
+    description: String
+    adminEmail: String!
+    taxId: String
+    logoUrl: String
+}
+
+input UpdateOrganizationInput {
+    name: String
+    description: String
+    adminEmail: String
+    taxId: String
+    logoUrl: String
+}

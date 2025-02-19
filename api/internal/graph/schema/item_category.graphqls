@@ -1,0 +1,35 @@
+extend type Query {
+    itemCategories(options: QueryOptions): [ItemCategory!]!
+    itemCategory(id: UUID!): ItemCategory
+}
+
+extend type Mutation {
+    createItemCategory(input: CreateItemCategoryInput!): ItemCategory!
+    updateItemCategory(id: UUID!, input: UpdateItemCategoryInput!): ItemCategory!
+    deleteItemCategory(id: UUID!): Boolean!
+}
+
+type ItemCategory {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    organization: Organization!
+    parentCategory: ItemCategory
+    childCategories: [ItemCategory!]!
+    name: String!
+    description: String
+    items: [Item!]!
+}
+
+input CreateItemCategoryInput {
+    organizationId: UUID!
+    parentCategoryId: UUID
+    name: String!
+    description: String
+}
+
+input UpdateItemCategoryInput {
+    parentCategoryId: UUID
+    name: String
+    description: String
+}

@@ -1,0 +1,49 @@
+extend type Query {
+    roles(options: QueryOptions): [Role!]!
+    role(id: UUID!): Role
+}
+
+extend type Mutation {
+    createRole(input: CreateRoleInput!): Role!
+    updateRole(id: UUID!, input: UpdateRoleInput!): Role!
+    deleteRole(id: UUID!): Boolean!
+    
+    assignUserRole(userId: UUID!, roleId: UUID!): UserRole!
+    removeUserRole(userId: UUID!, roleId: UUID!): Boolean!
+}
+
+type Role {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    name: String!
+    description: String
+    permissions: [Permission!]!
+    users: [User!]!
+}
+
+type UserRole {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    user: User!
+    role: Role!
+}
+
+type RolePermission {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    role: Role!
+    permission: Permission!
+}
+
+input CreateRoleInput {
+    name: String!
+    description: String
+}
+
+input UpdateRoleInput {
+    name: String
+    description: String
+}

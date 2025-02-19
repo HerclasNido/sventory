@@ -1,0 +1,14 @@
+type Query {
+    activeUser: User
+    activeOrganization: Organization
+}
+
+type Mutation {
+    login(email: String!, password: String!): AuthPayload!
+    setActiveOrganization(organizationID: String!): AuthPayload!
+}
+
+type AuthPayload {
+    token: String!
+    user: User!
+}

@@ -1,0 +1,38 @@
+extend type Query {
+    locations(options: QueryOptions): [Location!]!
+    location(id: UUID!): Location
+}
+
+extend type Mutation {
+    createLocation(input: CreateLocationInput!): Location!
+    updateLocation(id: UUID!, input: UpdateLocationInput!): Location!
+    deleteLocation(id: UUID!): Boolean!
+}
+
+type Location {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    place: Place!
+    parentLocation: Location
+    childLocations: [Location!]
+    name: String!
+    type: String!
+    description: String
+}
+
+input CreateLocationInput {
+    placeId: UUID!
+    parentLocationId: UUID
+    name: String!
+    type: String!
+    description: String
+}
+
+input UpdateLocationInput {
+    placeId: UUID
+    parentLocationId: UUID
+    name: String
+    type: String
+    description: String
+}

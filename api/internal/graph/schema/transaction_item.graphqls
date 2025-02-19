@@ -1,0 +1,37 @@
+extend type Mutation {
+    addTransactionItem(input: AddTransactionItemInput!): TransactionItem!
+    updateTransactionItem(id: UUID!, input: UpdateTransactionItemInput!): TransactionItem!
+    removeTransactionItem(id: UUID!): Boolean!
+}
+
+type TransactionItem {
+    id: UUID!
+    transaction: InventoryTransaction!
+    item: Item!
+    fromLocation: Location
+    toLocation: Location
+    quantity: Float!
+    batchNumber: String
+    reason: String
+    notes: String
+}
+
+input AddTransactionItemInput {
+    transactionId: UUID!
+    itemId: UUID!
+    fromLocationId: UUID
+    toLocationId: UUID
+    quantity: Float!
+    batchNumber: String
+    reason: String
+    notes: String
+}
+
+input UpdateTransactionItemInput {
+    fromLocationId: UUID
+    toLocationId: UUID
+    quantity: Float
+    batchNumber: String
+    reason: String
+    notes: String
+}
