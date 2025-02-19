@@ -1,4 +1,4 @@
-![Sventory Logo](ui/public/sventory-logo.svg)
+<img src="ui/public/sventory-logo.svg" alt="Sventory Logo" width="300">
 
 # Sventory
 
