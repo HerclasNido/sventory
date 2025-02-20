@@ -4,6 +4,8 @@
 
 Sventory is an **inventory management software** designed for businesses and individuals who need an efficient way to track and manage their inventory. It provides powerful features for organizing items across multiple organizations, locations, and categories.
 
+<img src="screenshot1.png" alt="App Screenshot">
+
 ## Features
 
 ### ✅ Core Features (Implemented)
