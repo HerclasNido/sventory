@@ -9,11 +9,13 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateSupplier is the resolver for the createSupplier field.
 func (r *mutationResolver) CreateSupplier(ctx context.Context, input model.CreateSupplierInput) (*model.Supplier, error) {
-	organizationID, err := parseUUID(input.OrganizationID)
+	organizationID, err := uuid.Parse(input.OrganizationID)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +46,7 @@ func (r *mutationResolver) CreateSupplier(ctx context.Context, input model.Creat
 
 // UpdateSupplier is the resolver for the updateSupplier field.
 func (r *mutationResolver) UpdateSupplier(ctx context.Context, id string, input model.UpdateSupplierInput) (*model.Supplier, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +117,7 @@ func (r *mutationResolver) UpdateSupplier(ctx context.Context, id string, input 
 
 // DeleteSupplier is the resolver for the deleteSupplier field.
 func (r *mutationResolver) DeleteSupplier(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -147,7 +149,7 @@ func (r *queryResolver) Suppliers(ctx context.Context, options *model.QueryOptio
 
 // Supplier is the resolver for the supplier field.
 func (r *queryResolver) Supplier(ctx context.Context, id string) (*model.Supplier, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

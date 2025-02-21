@@ -18,7 +18,7 @@ import (
 
 // CreateItemCategory is the resolver for the createItemCategory field.
 func (r *mutationResolver) CreateItemCategory(ctx context.Context, input model.CreateItemCategoryInput) (*model.ItemCategory, error) {
-	organizationID, err := parseUUID(input.OrganizationID)
+	organizationID, err := uuid.Parse(input.OrganizationID)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func (r *mutationResolver) CreateItemCategory(ctx context.Context, input model.C
 		if *input.ParentCategoryID == "" {
 			itemCategory.ParentCategoryID = uuid.Nil
 		} else {
-			parentLocationID, err := parseUUID(getStringValue(input.ParentCategoryID))
+			parentLocationID, err := uuid.Parse(getStringValue(input.ParentCategoryID))
 			if err != nil {
 				return nil, err
 			}
@@ -50,7 +50,7 @@ func (r *mutationResolver) CreateItemCategory(ctx context.Context, input model.C
 
 // UpdateItemCategory is the resolver for the updateItemCategory field.
 func (r *mutationResolver) UpdateItemCategory(ctx context.Context, id string, input model.UpdateItemCategoryInput) (*model.ItemCategory, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (r *mutationResolver) UpdateItemCategory(ctx context.Context, id string, in
 		if *input.ParentCategoryID == "" {
 			itemCategory.ParentCategoryID = uuid.Nil
 		} else {
-			parentCategoryID, err := parseUUID(getStringValue(input.ParentCategoryID))
+			parentCategoryID, err := uuid.Parse(getStringValue(input.ParentCategoryID))
 			if err != nil {
 				return nil, err
 			}
@@ -94,31 +94,33 @@ func (r *mutationResolver) UpdateItemCategory(ctx context.Context, id string, in
 
 // DeleteItemCategory is the resolver for the deleteItemCategory field.
 func (r *mutationResolver) DeleteItemCategory(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
-		return false, err
+		return false, model.NewError(model.ValidationError, err.Error())
 	}
 
 	// Prevent deletion of item category if it has items
 	var itemCount int64
 	if err := database.DB.Model(&model.Item{}).Where("category_id = ?", entityID).Count(&itemCount).Error; err != nil {
-		return false, err
+		return false, model.NewError(model.InternalError, err.Error())
 	}
 	if itemCount > 0 {
-		return false, errors.New("cannot delete category with items")
+		return false, model.NewError(model.ValidationError, "cannot delete category with items")
 	}
 
 	// Prevent deletion of item category if it has child categories
 	var childrenCount int64
 	if err := database.DB.Model(&model.ItemCategory{}).Where("parent_category_id = ?", entityID).Count(&childrenCount).Error; err != nil {
-		return false, err
+		return false, model.NewError(model.InternalError, err.Error())
 	}
 	if childrenCount > 0 {
-		return false, errors.New("cannot delete category with child categories")
+		customErr := model.NewError(model.HasChildrenError, "cannot delete category with child categories")
+		fmt.Printf("Returning custom error: %+v of type %T", customErr, customErr) // Debug log
+		return false, customErr
 	}
 
 	if err := database.DB.Delete(&model.ItemCategory{}, "id = ?", entityID).Error; err != nil {
-		return false, err
+		return false, model.NewError(model.InternalError, err.Error())
 	}
 
 	return true, nil
@@ -180,7 +182,7 @@ func (r *queryResolver) ItemCategories(ctx context.Context, options *model.Query
 
 // ItemCategory is the resolver for the itemCategory field.
 func (r *queryResolver) ItemCategory(ctx context.Context, id string) (*model.ItemCategory, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

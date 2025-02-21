@@ -9,16 +9,18 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateSupplierItem is the resolver for the createSupplierItem field.
 func (r *mutationResolver) CreateSupplierItem(ctx context.Context, input model.CreateSupplierItemInput) (*model.SupplierItem, error) {
-	supplierID, err := parseUUID(input.SupplierID)
+	supplierID, err := uuid.Parse(input.SupplierID)
 	if err != nil {
 		return nil, err
 	}
 
-	itemID, err := parseUUID(input.ItemID)
+	itemID, err := uuid.Parse(input.ItemID)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +44,7 @@ func (r *mutationResolver) CreateSupplierItem(ctx context.Context, input model.C
 
 // UpdateSupplierItem is the resolver for the updateSupplierItem field.
 func (r *mutationResolver) UpdateSupplierItem(ctx context.Context, id string, input model.UpdateSupplierItemInput) (*model.SupplierItem, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +55,7 @@ func (r *mutationResolver) UpdateSupplierItem(ctx context.Context, id string, in
 	}
 
 	if input.SupplierID != nil {
-		supplierID, err := parseUUID(*input.SupplierID)
+		supplierID, err := uuid.Parse(*input.SupplierID)
 		if err != nil {
 			return nil, err
 		}
@@ -61,7 +63,7 @@ func (r *mutationResolver) UpdateSupplierItem(ctx context.Context, id string, in
 	}
 
 	if input.ItemID != nil {
-		itemID, err := parseUUID(*input.ItemID)
+		itemID, err := uuid.Parse(*input.ItemID)
 		if err != nil {
 			return nil, err
 		}
@@ -97,7 +99,7 @@ func (r *mutationResolver) UpdateSupplierItem(ctx context.Context, id string, in
 
 // DeleteSupplierItem is the resolver for the deleteSupplierItem field.
 func (r *mutationResolver) DeleteSupplierItem(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -131,7 +133,7 @@ func (r *queryResolver) SupplierItems(ctx context.Context, options *model.QueryO
 
 // SupplierItem is the resolver for the supplierItem field.
 func (r *queryResolver) SupplierItem(ctx context.Context, id string) (*model.SupplierItem, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

@@ -10,13 +10,15 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateItem is the resolver for the createItem field.
 func (r *mutationResolver) CreateItem(ctx context.Context, input model.CreateItemInput) (*model.Item, error) {
 	fmt.Print("CreateItem resolver")
 
-	categoryID, err := parseUUID(input.CategoryID)
+	categoryID, err := uuid.Parse(input.CategoryID)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +68,7 @@ func (r *mutationResolver) UpdateItem(ctx context.Context, id string, input mode
 	}
 
 	if input.CategoryID != nil {
-		categoryId, err := parseUUID(*input.CategoryID)
+		categoryId, err := uuid.Parse(*input.CategoryID)
 		if err != nil {
 			return nil, err
 		}
@@ -150,7 +152,7 @@ func (r *mutationResolver) UpdateItem(ctx context.Context, id string, input mode
 
 // DeleteItem is the resolver for the deleteItem field.
 func (r *mutationResolver) DeleteItem(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -184,7 +186,7 @@ func (r *queryResolver) Items(ctx context.Context, options *model.QueryOptions) 
 
 // Item is the resolver for the item field.
 func (r *queryResolver) Item(ctx context.Context, id string) (*model.Item, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

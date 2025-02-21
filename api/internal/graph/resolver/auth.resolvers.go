@@ -39,7 +39,7 @@ func (r *mutationResolver) Login(ctx context.Context, email string, password str
 }
 
 func (r *mutationResolver) SetActiveOrganization(ctx context.Context, organizationID string) (*model.AuthPayload, error) {
-	orgUUID, err := parseUUID(organizationID)
+	orgUUID, err := uuid.Parse(organizationID)
 	if err != nil {
 		return nil, err
 	}

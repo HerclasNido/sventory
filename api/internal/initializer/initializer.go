@@ -3,11 +3,14 @@ package initializer
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
+	"sventory/internal/auth"
 	"sventory/internal/database"
 	"sventory/internal/graph/model"
 
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -35,6 +38,56 @@ func FirstTimeInitialization() error {
 	}
 
 	return nil
+}
+
+func LoadEnv() error {
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: .env file not found")
+	}
+
+	requiredEnvVars := []string{
+		"PORT",
+		"DB_HOST",
+		"DB_USER",
+		"DB_NAME",
+		"DB_PORT",
+		"FRONTEND_URL",
+		"JWT_SECRET",
+		"ORGANIZATION_NAME",
+		"SUPERADMIN_EMAIL",
+		"SUPERADMIN_PASSWORD",
+	}
+	for _, v := range requiredEnvVars {
+		if os.Getenv(v) == "" {
+			return fmt.Errorf("required environment variable %s not set", v)
+		}
+	}
+
+	return nil
+}
+
+func InitializeAuth() (*auth.PermissionChecker, error) {
+	// Initialize roles and permissions
+	if err := auth.InitializeRolesAndPermissions(database.DB); err != nil {
+		return nil, fmt.Errorf("initializing roles and permissions: %w", err)
+	}
+
+	// Create permission checker
+	permCheck := auth.NewPermissionChecker(database.DB)
+
+	return permCheck, nil
+}
+
+func PrintSuperAdminJWT() {
+	superAdmin, err := auth.AuthenticateUser(os.Getenv("SUPERADMIN_EMAIL"), os.Getenv("SUPERADMIN_PASSWORD"))
+	if err != nil {
+		log.Fatalf("failed to authenticate superadmin: %v", err)
+	}
+	superAdminToken, err := auth.GenerateToken(superAdmin.ID, uuid.New())
+	if err != nil {
+		log.Fatalf("failed to generate token for superadmin: %v", err)
+	}
+	log.Printf("Superadmin JWT: %s", superAdminToken)
 }
 
 func existingOrganization() (uuid.UUID, error) {

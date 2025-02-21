@@ -18,7 +18,7 @@ import (
 
 // CreateLocation is the resolver for the createLocation field.
 func (r *mutationResolver) CreateLocation(ctx context.Context, input model.CreateLocationInput) (*model.Location, error) {
-	placeID, err := parseUUID(input.PlaceID)
+	placeID, err := uuid.Parse(input.PlaceID)
 	if err != nil {
 		return nil, fmt.Errorf("parsing location ID: %w", err)
 	}
@@ -34,7 +34,7 @@ func (r *mutationResolver) CreateLocation(ctx context.Context, input model.Creat
 		if *input.ParentLocationID == "" {
 			location.ParentLocationID = uuid.Nil
 		} else {
-			parentLocationID, err := parseUUID(getStringValue(input.ParentLocationID))
+			parentLocationID, err := uuid.Parse(getStringValue(input.ParentLocationID))
 			if err != nil {
 				return nil, err
 			}
@@ -51,7 +51,7 @@ func (r *mutationResolver) CreateLocation(ctx context.Context, input model.Creat
 
 // UpdateLocation is the resolver for the updateLocation field.
 func (r *mutationResolver) UpdateLocation(ctx context.Context, id string, input model.UpdateLocationInput) (*model.Location, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (r *mutationResolver) UpdateLocation(ctx context.Context, id string, input 
 	}
 
 	if input.PlaceID != nil {
-		placeID, err := parseUUID(getStringValue(input.PlaceID))
+		placeID, err := uuid.Parse(getStringValue(input.PlaceID))
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +73,7 @@ func (r *mutationResolver) UpdateLocation(ctx context.Context, id string, input 
 		if *input.ParentLocationID == "" {
 			location.ParentLocationID = uuid.Nil
 		} else {
-			parentLocationID, err := parseUUID(getStringValue(input.ParentLocationID))
+			parentLocationID, err := uuid.Parse(getStringValue(input.ParentLocationID))
 			if err != nil {
 				return nil, err
 			}
@@ -107,7 +107,7 @@ func (r *mutationResolver) UpdateLocation(ctx context.Context, id string, input 
 
 // DeleteLocation is the resolver for the deleteLocation field.
 func (r *mutationResolver) DeleteLocation(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -160,7 +160,7 @@ func (r *queryResolver) Locations(ctx context.Context, options *model.QueryOptio
 
 // Location is the resolver for the location field.
 func (r *queryResolver) Location(ctx context.Context, id string) (*model.Location, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

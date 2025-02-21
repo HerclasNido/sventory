@@ -9,6 +9,8 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreatePermission is the resolver for the createPermission field.
@@ -26,7 +28,7 @@ func (r *mutationResolver) CreatePermission(ctx context.Context, input model.Cre
 
 // UpdatePermission is the resolver for the updatePermission field.
 func (r *mutationResolver) UpdatePermission(ctx context.Context, id string, input model.UpdatePermissionInput) (*model.Permission, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +55,7 @@ func (r *mutationResolver) UpdatePermission(ctx context.Context, id string, inpu
 
 // DeletePermission is the resolver for the deletePermission field.
 func (r *mutationResolver) DeletePermission(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -66,12 +68,12 @@ func (r *mutationResolver) DeletePermission(ctx context.Context, id string) (boo
 
 // AssignRolePermission is the resolver for the assignRolePermission field.
 func (r *mutationResolver) AssignRolePermission(ctx context.Context, roleID string, permissionID string) (*model.RolePermission, error) {
-	roleUUID, err := parseUUID(roleID)
+	roleUUID, err := uuid.Parse(roleID)
 	if err != nil {
 		return nil, err
 	}
 
-	permissionUUID, err := parseUUID(permissionID)
+	permissionUUID, err := uuid.Parse(permissionID)
 	if err != nil {
 		return nil, err
 	}
@@ -92,12 +94,12 @@ func (r *mutationResolver) AssignRolePermission(ctx context.Context, roleID stri
 
 // RemoveRolePermission is the resolver for the removeRolePermission field.
 func (r *mutationResolver) RemoveRolePermission(ctx context.Context, roleID string, permissionID string) (bool, error) {
-	roleUUID, err := parseUUID(roleID)
+	roleUUID, err := uuid.Parse(roleID)
 	if err != nil {
 		return false, err
 	}
 
-	permissionUUID, err := parseUUID(permissionID)
+	permissionUUID, err := uuid.Parse(permissionID)
 	if err != nil {
 		return false, err
 	}
@@ -146,7 +148,7 @@ func (r *queryResolver) Permissions(ctx context.Context, options *model.QueryOpt
 
 // Permission is the resolver for the permission field.
 func (r *queryResolver) Permission(ctx context.Context, id string) (*model.Permission, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

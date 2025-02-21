@@ -9,6 +9,8 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateRole is the resolver for the createRole field.
@@ -25,7 +27,7 @@ func (r *mutationResolver) CreateRole(ctx context.Context, input model.CreateRol
 
 // UpdateRole is the resolver for the updateRole field.
 func (r *mutationResolver) UpdateRole(ctx context.Context, id string, input model.UpdateRoleInput) (*model.Role, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +53,7 @@ func (r *mutationResolver) UpdateRole(ctx context.Context, id string, input mode
 
 // DeleteRole is the resolver for the deleteRole field.
 func (r *mutationResolver) DeleteRole(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -63,12 +65,12 @@ func (r *mutationResolver) DeleteRole(ctx context.Context, id string) (bool, err
 
 // AssignUserRole is the resolver for the assignUserRole field.
 func (r *mutationResolver) AssignUserRole(ctx context.Context, userID string, roleID string) (*model.UserRole, error) {
-	userUUID, err := parseUUID(userID)
+	userUUID, err := uuid.Parse(userID)
 	if err != nil {
 		return nil, err
 	}
 
-	roleUUID, err := parseUUID(roleID)
+	roleUUID, err := uuid.Parse(roleID)
 	if err != nil {
 		return nil, err
 	}
@@ -85,12 +87,12 @@ func (r *mutationResolver) AssignUserRole(ctx context.Context, userID string, ro
 
 // RemoveUserRole is the resolver for the removeUserRole field.
 func (r *mutationResolver) RemoveUserRole(ctx context.Context, userID string, roleID string) (bool, error) {
-	userUUID, err := parseUUID(userID)
+	userUUID, err := uuid.Parse(userID)
 	if err != nil {
 		return false, err
 	}
 
-	roleUUID, err := parseUUID(roleID)
+	roleUUID, err := uuid.Parse(roleID)
 	if err != nil {
 		return false, err
 	}
@@ -123,7 +125,7 @@ func (r *queryResolver) Roles(ctx context.Context, options *model.QueryOptions) 
 
 // Role is the resolver for the role field.
 func (r *queryResolver) Role(ctx context.Context, id string) (*model.Role, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

@@ -10,11 +10,13 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreatePlace is the resolver for the createPlace field.
 func (r *mutationResolver) CreatePlace(ctx context.Context, input model.CreatePlaceInput) (*model.Place, error) {
-	organizationID, err := parseUUID(input.OrganizationID)
+	organizationID, err := uuid.Parse(input.OrganizationID)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +42,7 @@ func (r *mutationResolver) CreatePlace(ctx context.Context, input model.CreatePl
 
 // UpdatePlace is the resolver for the updatePlace field.
 func (r *mutationResolver) UpdatePlace(ctx context.Context, id string, input model.UpdatePlaceInput) (*model.Place, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +93,7 @@ func (r *mutationResolver) UpdatePlace(ctx context.Context, id string, input mod
 
 // DeletePlace is the resolver for the deletePlace field.
 func (r *mutationResolver) DeletePlace(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -135,7 +137,7 @@ func (r *queryResolver) Places(ctx context.Context, options *model.QueryOptions)
 
 // Place is the resolver for the place field.
 func (r *queryResolver) Place(ctx context.Context, id string) (*model.Place, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

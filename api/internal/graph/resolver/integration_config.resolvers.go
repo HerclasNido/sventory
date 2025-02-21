@@ -9,11 +9,13 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateIntegrationConfig is the resolver for the createIntegrationConfig field.
 func (r *mutationResolver) CreateIntegrationConfig(ctx context.Context, input model.CreateIntegrationConfigInput) (*model.IntegrationConfig, error) {
-	organizationID, err := parseUUID(input.OrganizationID)
+	organizationID, err := uuid.Parse(input.OrganizationID)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +35,7 @@ func (r *mutationResolver) CreateIntegrationConfig(ctx context.Context, input mo
 
 // UpdateIntegrationConfig is the resolver for the updateIntegrationConfig field.
 func (r *mutationResolver) UpdateIntegrationConfig(ctx context.Context, id string, input model.UpdateIntegrationConfigInput) (*model.IntegrationConfig, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +70,7 @@ func (r *mutationResolver) UpdateIntegrationConfig(ctx context.Context, id strin
 
 // DeleteIntegrationConfig is the resolver for the deleteIntegrationConfig field.
 func (r *mutationResolver) DeleteIntegrationConfig(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -102,7 +104,7 @@ func (r *queryResolver) IntegrationConfigs(ctx context.Context, options *model.Q
 
 // IntegrationConfig is the resolver for the integrationConfig field.
 func (r *queryResolver) IntegrationConfig(ctx context.Context, id string) (*model.IntegrationConfig, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

@@ -15,12 +15,12 @@ import (
 
 // AddTransactionItem is the resolver for the addTransactionItem field.
 func (r *mutationResolver) AddTransactionItem(ctx context.Context, input model.AddTransactionItemInput) (*model.TransactionItem, error) {
-	transactionID, err := parseUUID(input.TransactionID)
+	transactionID, err := uuid.Parse(input.TransactionID)
 	if err != nil {
 		return nil, err
 	}
 
-	itemID, err := parseUUID(input.ItemID)
+	itemID, err := uuid.Parse(input.ItemID)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +35,7 @@ func (r *mutationResolver) AddTransactionItem(ctx context.Context, input model.A
 	}
 
 	if input.FromLocationID != nil {
-		fromLocationID, err := parseUUID(getStringValue(input.FromLocationID))
+		fromLocationID, err := uuid.Parse(getStringValue(input.FromLocationID))
 		if err != nil {
 			return nil, err
 		}
@@ -43,7 +43,7 @@ func (r *mutationResolver) AddTransactionItem(ctx context.Context, input model.A
 	}
 
 	if input.ToLocationID != nil {
-		toLocationID, err := parseUUID(getStringValue(input.ToLocationID))
+		toLocationID, err := uuid.Parse(getStringValue(input.ToLocationID))
 		if err != nil {
 			return nil, err
 		}
@@ -59,7 +59,7 @@ func (r *mutationResolver) AddTransactionItem(ctx context.Context, input model.A
 
 // UpdateTransactionItem is the resolver for the updateTransactionItem field.
 func (r *mutationResolver) UpdateTransactionItem(ctx context.Context, id string, input model.UpdateTransactionItemInput) (*model.TransactionItem, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (r *mutationResolver) UpdateTransactionItem(ctx context.Context, id string,
 	}
 
 	if input.FromLocationID != nil {
-		fromLocationID, err := parseUUID(getStringValue(input.FromLocationID))
+		fromLocationID, err := uuid.Parse(getStringValue(input.FromLocationID))
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +78,7 @@ func (r *mutationResolver) UpdateTransactionItem(ctx context.Context, id string,
 	}
 
 	if input.ToLocationID != nil {
-		toLocationID, err := parseUUID(getStringValue(input.ToLocationID))
+		toLocationID, err := uuid.Parse(getStringValue(input.ToLocationID))
 		if err != nil {
 			return nil, err
 		}
@@ -110,7 +110,7 @@ func (r *mutationResolver) UpdateTransactionItem(ctx context.Context, id string,
 
 // RemoveTransactionItem is the resolver for the removeTransactionItem field.
 func (r *mutationResolver) RemoveTransactionItem(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}

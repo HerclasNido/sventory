@@ -10,6 +10,8 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateCustomerAccount is the resolver for the createCustomerAccount field.
@@ -19,7 +21,7 @@ func (r *mutationResolver) CreateCustomerAccount(ctx context.Context, input mode
 		return nil, err
 	}
 
-	organizationID, err := parseUUID(input.OrganizationID)
+	organizationID, err := uuid.Parse(input.OrganizationID)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +52,7 @@ func (r *mutationResolver) CreateCustomerAccount(ctx context.Context, input mode
 
 // UpdateCustomerAccount is the resolver for the updateCustomerAccount field.
 func (r *mutationResolver) UpdateCustomerAccount(ctx context.Context, id string, input model.UpdateCustomerAccountInput) (*model.CustomerAccount, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +127,7 @@ func (r *mutationResolver) UpdateCustomerAccount(ctx context.Context, id string,
 
 // DeleteCustomerAccount is the resolver for the deleteCustomerAccount field.
 func (r *mutationResolver) DeleteCustomerAccount(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -159,7 +161,7 @@ func (r *queryResolver) CustomerAccounts(ctx context.Context, options *model.Que
 
 // CustomerAccount is the resolver for the customerAccount field.
 func (r *queryResolver) CustomerAccount(ctx context.Context, id string) (*model.CustomerAccount, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

@@ -12,6 +12,8 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/model"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // UploadItemImage is the resolver for the uploadItemImage field.
@@ -43,7 +45,7 @@ func (r *mutationResolver) UploadItemImage(ctx context.Context, input model.Uplo
 	imageURL := fmt.Sprintf("http://localhost:%s/uploads/%s", os.Getenv("PORT"), filename)
 
 	// Verify if item exists
-	itemID, err := parseUUID(input.ItemID)
+	itemID, err := uuid.Parse(input.ItemID)
 	if err != nil {
 		return "", err
 	}

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"sventory/internal/auth"
 
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -36,10 +35,6 @@ func hashPassword(password string) (string, error) {
 		return "", err
 	}
 	return string(hashedPassword), nil
-}
-
-func parseUUID(value string) (uuid.UUID, error) {
-	return uuid.Parse(value)
 }
 
 func getStringValue(value *string) string {

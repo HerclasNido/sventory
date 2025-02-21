@@ -9,6 +9,8 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateOrganization is the resolver for the createOrganization field.
@@ -30,7 +32,7 @@ func (r *mutationResolver) CreateOrganization(ctx context.Context, input model.C
 
 // UpdateOrganization is the resolver for the updateOrganization field.
 func (r *mutationResolver) UpdateOrganization(ctx context.Context, id string, input model.UpdateOrganizationInput) (*model.Organization, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +71,7 @@ func (r *mutationResolver) UpdateOrganization(ctx context.Context, id string, in
 
 // DeleteOrganization is the resolver for the deleteOrganization field.
 func (r *mutationResolver) DeleteOrganization(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -118,7 +120,7 @@ func (r *queryResolver) Organizations(ctx context.Context, options *model.QueryO
 
 // Organization is the resolver for the organization field.
 func (r *queryResolver) Organization(ctx context.Context, id string) (*model.Organization, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}

@@ -10,11 +10,13 @@ import (
 	"sventory/internal/database"
 	"sventory/internal/graph/generated"
 	"sventory/internal/graph/model"
+
+	"github.com/google/uuid"
 )
 
 // CreateInventoryTransaction is the resolver for the createInventoryTransaction field.
 func (r *mutationResolver) CreateInventoryTransaction(ctx context.Context, input model.CreateInventoryTransactionInput) (*model.InventoryTransaction, error) {
-	organizationID, err := parseUUID(input.OrganizationID)
+	organizationID, err := uuid.Parse(input.OrganizationID)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +37,7 @@ func (r *mutationResolver) CreateInventoryTransaction(ctx context.Context, input
 
 // UpdateInventoryTransaction is the resolver for the updateInventoryTransaction field.
 func (r *mutationResolver) UpdateInventoryTransaction(ctx context.Context, id string, input model.UpdateInventoryTransactionInput) (*model.InventoryTransaction, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +68,7 @@ func (r *mutationResolver) UpdateInventoryTransaction(ctx context.Context, id st
 
 // DeleteInventoryTransaction is the resolver for the deleteInventoryTransaction field.
 func (r *mutationResolver) DeleteInventoryTransaction(ctx context.Context, id string) (bool, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return false, err
 	}
@@ -127,7 +129,7 @@ func (r *queryResolver) InventoryTransactions(ctx context.Context, options *mode
 
 // InventoryTransaction is the resolver for the inventoryTransaction field.
 func (r *queryResolver) InventoryTransaction(ctx context.Context, id string) (*model.InventoryTransaction, error) {
-	entityID, err := parseUUID(id)
+	entityID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
 	}
