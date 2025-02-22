@@ -1,3 +1,7 @@
+## Disclaimer
+
+**This project is currently under development and should not be used in a production environment.**  Features and functionality are subject to change without notice.  While efforts are made to ensure stability and correctness, no guarantees are provided. Use at your own risk.
+
 <img src="ui/public/sventory-logo.svg" alt="Sventory Logo" width="300">
 
 # Sventory
